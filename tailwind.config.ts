@@ -8,10 +8,18 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'logo' : 'Poppins',
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      },
+      colors: {
+        customBlue1: '#0071c9',
+        customBlue2: '#00baef',
+        customBlue3: '#007fc9',
       },
     },
   },
