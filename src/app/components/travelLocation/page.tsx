@@ -1,6 +1,9 @@
 "use client";
-import { BrowserRouter as Router } from 'react-router-dom';
+import React from 'react';
 import Card from './card/page';
+import { useState } from 'react';
+import AddLocation from './popupForm/page';
+import NavBar from '../nav/nav-bar';
 
 interface FilterProps {
     // Add any additional props if needed
@@ -8,9 +11,12 @@ interface FilterProps {
 
 
 const TravelLocations: React.FC<FilterProps> = () => {
+    const [showModal, setShowModal] = useState(false);
     return (
-        <div>
-            <div className="flex mt-12">
+        
+        <div className="bg-cover bg-center h-screen" style={{ backgroundImage: 'url("images/smart_traveller.png")', backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+            <NavBar></NavBar>
+            <div className="flex mt-4" >
                 <div className="flex-1 bg-white w-96 mr-4">
                     <div className="flex flex-col p-2 mt-8 w-80 ml-4">
                         <div
@@ -90,7 +96,7 @@ const TravelLocations: React.FC<FilterProps> = () => {
                         </div>
                     </div>
                     <div className="w-full flex mt-24 justify-center items-center">
-                            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-12 rounded ">
+                            <button onClick={() => setShowModal(true)} type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-12 rounded ">
                                 +New Location
                             </button>
                         </div>
@@ -113,7 +119,15 @@ const TravelLocations: React.FC<FilterProps> = () => {
                     </div>
                 </div>
             </div>
-
+            <div id="modal-root" className="absolute top-12 left-96 w-9/12 h-full flex">
+                {showModal && <div  className="absolute top-12 left-80 w-5/6 h-full flex justify-center items-center">
+                    <div className="w-5/6 flex justify-end " >
+                        
+                       <AddLocation onClose={() => setShowModal(false)}></AddLocation>
+                    </div>
+                    
+                </div>}
+            </div>
 
 
         </div>

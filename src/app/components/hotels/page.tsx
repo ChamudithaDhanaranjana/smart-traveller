@@ -1,6 +1,10 @@
 "use client";
 import { BrowserRouter as Router } from 'react-router-dom';
-import Card from './card/page';
+import Card from '../travelLocation/card/page';
+import NavBar from '../nav/nav-bar';
+import { useState } from 'react';
+import AddHotel from './popupForm/page';
+
 
 interface FilterProps {
     // Add any additional props if needed
@@ -8,9 +12,11 @@ interface FilterProps {
 
 
 const Hotels: React.FC<FilterProps> = () => {
+    const [showModal, setShowModal] = useState(false);
     return (
-        <div>
-            <div className="flex mt-12">
+        <div className="bg-cover bg-center h-screen" style={{ backgroundImage: 'url("images/smart_traveller.png")', backgroundSize: 'cover', backgroundPosition: 'center center' }} >
+             <NavBar></NavBar>
+            <div className="flex mt-4">
                 <div className="flex-1 bg-white w-96 mr-4">
                     <div className="flex flex-col p-2 mt-8 w-80 ml-4">
                         <div
@@ -89,14 +95,17 @@ const Hotels: React.FC<FilterProps> = () => {
                             </button>
                         </div>
                     </div>
+
                     <div className="w-full mt-24 flex justify-center items-center">
-                            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-12 rounded ">
-                                +New Hotel
-                            </button>
-                        </div>
+                        <button onClick={() => setShowModal(true)} type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-12 rounded ">
+                            +New Hotel
+                        </button>
+                    </div>
+                    
                 </div>
                 <div className="flex-2">
                     <div className="bg-white p-4 w-full h-full">
+                    
                         <h2 className='text-black p-2'>Hotels and Villas</h2>
                         <div className='flex'>
                             <div className="m-2"><Card></Card></div>
@@ -114,7 +123,15 @@ const Hotels: React.FC<FilterProps> = () => {
                 </div>
             </div>
 
-
+            <div id="modal-root" className="absolute top-12 left-96 w-9/12 h-full flex">
+                {showModal && <div  className="absolute top-12 left-80 w-5/6 h-full flex justify-center items-center">
+                    <div className="w-5/6 flex justify-end " >
+                        
+                       <AddHotel onClose={() => setShowModal(false)}></AddHotel>
+                    </div>
+                    
+                </div>}
+            </div>
 
         </div>
 

@@ -1,8 +1,11 @@
 "use client";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import NavBar from "../../nav/nav-bar";
+import ReactDOM from "react-dom";
 
+interface AddLocationProps {
+  onClose: () => void;
+}
 interface FormData {
   travelLocationName: string;
   travelLocationType: string;
@@ -15,8 +18,7 @@ interface FormData {
   closeDropdown: string;
 }
 
-export default function AddLocation() {
-  const [state, setState] = useState("");
+const AddLocation: React.FC<AddLocationProps> = ({ onClose }) => {
   const [formData, setFormData] = useState<FormData>({
     travelLocationName: '',
     travelLocationType: '',
@@ -29,9 +31,6 @@ export default function AddLocation() {
     closeDropdown: '',
   });
 
-  useEffect(() => {
-  }, []);
-
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
@@ -42,13 +41,18 @@ export default function AddLocation() {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     console.log('Form Data:', formData);
+    // Add your logic to submit the form or close the modal
+    // For now, just close the modal
+    onClose();
   };
 
-  return (
+  const modalContent = (
     <Router>
-      <NavBar></NavBar>
       <div className="w-full h-full">
         <form className="bg-white p-10 rounded-lg" onSubmit={handleSubmit}>
+          <a className='text-black flex justify-end items-end' href="#" onClick={onClose}>
+            x
+          </a>
           <label className="block text-gray-700 font-bold mb-2 text-xl">+AddTravelLocation</label>
           <div className="flex">
             <div className="flex-1 w-48 pr-12">
@@ -73,7 +77,7 @@ export default function AddLocation() {
             <div className="flex-1 ">
               <div className="mb-4">
                 <label htmlFor="hotelName" className="block text-gray-700 mb-2">
-                Travel Location Name
+                  Travel Location Name
                 </label>
                 <input
                   type="text"
@@ -86,7 +90,7 @@ export default function AddLocation() {
               </div>
               <div className="mb-4">
                 <label htmlFor="hotelType" className="block text-gray-700 mb-2">
-                Travel Location Type
+                  Travel Location Type
                 </label>
                 <input
                   type="text"
@@ -160,7 +164,6 @@ export default function AddLocation() {
                     </div>
                   </div>
                 </div>
-
                 <div className="flex w-full">
                   <label htmlFor="district" className="text-gray-700 mr-2">
                     District
@@ -194,7 +197,6 @@ export default function AddLocation() {
                   </div>
                 </div>
               </div>
-
               <div className="mb-4 flex items-center">
                 <label htmlFor="locationLink" className="text-gray-700 mr-2">
                   <span className="inline-block">Location link</span>
@@ -208,7 +210,6 @@ export default function AddLocation() {
                   className="w-full py-2 px-3 rounded-full bg-gray-200 focus:outline-none focus:border-indigo-500"
                 />
               </div>
-
               <div className="mb-4 flex w-full items-center">
                 <div className="relative w-full flex mr-4">
                   <label htmlFor="openDropdown" className="mr-12 text-gray-700 block">Open</label>
@@ -240,7 +241,6 @@ export default function AddLocation() {
                     </div>
                   </div>
                 </div>
-
                 <div className="relative flex w-full">
                   <label htmlFor="closeDropdown" className="text-gray-700 mr-4 block">Close</label>
                   <div className="relative w-full">
@@ -272,15 +272,13 @@ export default function AddLocation() {
                   </div>
                 </div>
               </div>
-
-
             </div>
           </div>
-
-
         </form>
       </div>
     </Router>
 
   );
+  return ReactDOM.createPortal(modalContent, document.getElementById('modal-root')!);
 }
+export default AddLocation;

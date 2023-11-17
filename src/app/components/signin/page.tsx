@@ -1,29 +1,86 @@
-export default function Email(){
-    return(
-        <div className="container mx-auto min-h-screen flex items-center justify-center">
-        <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                    Email Address
-                </label>
-                <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Username"></input>
+import React from 'react';
+import NavBar2 from "../nav2/nav-bar";
+
+
+export default function Email() {
+    return (
+        <div className="bg-cover bg-center h-screen" style={{ backgroundImage: 'url("images/background.jpg")', backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+            <NavBar2></NavBar2>
+            <div className="w-48 ml-28 mt-12">
+          <img src="images/smart_traveller_logo.png" alt="" />
+          <div className="font-logo text-xl text-black font-medium">Visit Sri Lanka</div>
+        </div>
+            <div className="flex justify-center mt-6">
+                <div className="justify-center w-96 pr-8 pl-8 px-6 py-6 lg:px-8 bg-white rounded">
+                    <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+                        <h2 className="mt-10 text-center font-bold leading-9 tracking-tight text-gray-900 text-4xl">
+                            Sign in
+                        </h2>
+                    </div>
+
+                    <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                        <form className="space-y-6" action="#" method="POST">
+                            <div>
+                                <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                                    Email address
+                                </label>
+                                <div className="mt-2">
+                                    <input
+                                        id="email"
+                                        name="email"
+                                        type="email"
+                                        placeholder="smarttraveller@gmail.com"
+                                        required
+                                        className="block w-full rounded-xl border-2 border-gray-300 py-2 px-3 text-gray-900 shadow-sm placeholder:text-gray-600 focus:ring-2 focus:ring-inset focus:ring-blue-500 focus:border-blue-500 hover:border-blue-500 sm:text-sm sm:leading-6"
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <div className="flex items-center justify-between">
+                                    <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                                        Enter your Password
+                                    </label>
+                                </div>
+                                <div className="mt-2">
+                                    <input
+                                        id="password"
+                                        name="password"
+                                        type="password"
+                                        placeholder="........."
+                                        required
+                                        className="block w-full rounded-xl border-2 border-gray-300 py-3 px-2 text-gray-900 shadow-sm placeholder:text-gray-600 focus:ring-2 focus:ring-inset focus:ring-blue-500 focus:border-blue-500 hover:border-blue-500 sm:text-sm sm:leading-6"
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <button
+                                    type="submit"
+                                    className="flex w-full justify-center rounded-2xl bg-blue-500 px-2 py-3 font-semibold leading-6 text-white text-xl shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500"
+                                >
+                                    Sign in
+                                </button>
+                            </div>
+                        </form>
+
+                        <p className="mt-4 text-xs text-gray-900 text-center font-semibold">
+                            By signing in or creating an account, you agree with our <br />
+                            <span className="text-blue-500 mt-4"> Terms & conditions</span> and
+                            <span className="text-blue-500 mt-4"> Privacy statement</span>
+                        </p> <br />
+
+                        <p className="text-center text-xs text-gray-900 font-semibold">
+                            All rights reserved.
+                            <br />
+                            Copyright (2023) - Smart travel.com
+                        </p>
+                    </div>
+                </div>
             </div>
-            <div className="mb-6">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                    Password
-                </label>
-                <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************"></input>
-            </div>
-            <div className="flex items-center justify-between">
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                    Sign In
-                </button>
-                <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
-                    Forgot Password?
-                </a>
-            </div>
-        </form>
-    </div>
+
+        </div>
+
 
     );
 }
