@@ -47,7 +47,7 @@ const AddLocation: React.FC<AddLocationProps> = ({ onClose }) => {
   };
 
   const modalContent = (
-    <Router>
+    <div className="absolute top-28 left-96 w-9/12 h-full flex justify-center items-center">
       <div className="w-full h-full">
         <form className="bg-white p-10 rounded-lg" onSubmit={handleSubmit}>
           <a className='text-black flex justify-end items-end' href="#" onClick={onClose}>
@@ -276,7 +276,7 @@ const AddLocation: React.FC<AddLocationProps> = ({ onClose }) => {
           </div>
         </form>
       </div>
-    </Router>
+    </div>
 
   );
   return ReactDOM.createPortal(modalContent, document.getElementById('modal-root')!);

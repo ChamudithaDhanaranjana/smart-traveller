@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useRouter } from 'next/navigation'; // Import the useRouter hook
 
+
 interface NavLinkProps {
   href: string;
   label: string;
@@ -73,6 +74,7 @@ const CustomNavLink: React.FC<NavLinkProps> = ({ href, label }) => {
     <a href={href} className="text-white" onClick={handleClick}>
       {label}
     </a>
+    
   );
 };
 

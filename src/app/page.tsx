@@ -1,5 +1,5 @@
-
 "use client";
+import Image from 'next/image'
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import NavBar from './components/nav/nav-bar';
@@ -12,7 +12,7 @@ export default function Home() {
 
       <Router>
         
-        <div className="bg-cover bg-center h-screen" style={{ backgroundImage: 'url("images/smart_traveller.png")', backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+        <div className="bg-cover bg-center h-screen" style={{ backgroundImage: 'url("../images/smart_traveller.png")', backgroundSize: 'cover', backgroundPosition: 'center center' }}>
       <NavBar></NavBar>
         <div>
         <div className="w-1/3 ml-28 mt-36">

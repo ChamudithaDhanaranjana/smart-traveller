@@ -1,10 +1,10 @@
 import ReactDOM from "react-dom";
 
-interface LocationViewProps {
+interface HotelViewProps {
     onClose: () => void;
 }
 
-const LocationView: React.FC<LocationViewProps> = ({ onClose }) => {
+const HotelView: React.FC<HotelViewProps> = ({ onClose }) => {
     const modalContent = (
         <div className="absolute top-28 left-96 w-9/12 h-full flex">
             <div className="bg-white p-4  w-full">
@@ -77,4 +77,4 @@ const LocationView: React.FC<LocationViewProps> = ({ onClose }) => {
     );
     return ReactDOM.createPortal(modalContent, document.getElementById('modal-root')!);
 };
-export default LocationView;
+export default HotelView;

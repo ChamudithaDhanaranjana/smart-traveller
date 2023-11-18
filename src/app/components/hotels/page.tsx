@@ -1,9 +1,11 @@
 "use client";
+import Image from 'next/image'
 import { BrowserRouter as Router } from 'react-router-dom';
 import Card from '../travelLocation/card/page';
 import NavBar from '../nav/nav-bar';
 import { useState } from 'react';
 import AddHotel from './popupForm/page';
+import HotelView from './popupView/page';
 
 
 interface FilterProps {
@@ -13,9 +15,10 @@ interface FilterProps {
 
 const Hotels: React.FC<FilterProps> = () => {
     const [showModal, setShowModal] = useState(false);
+    const [showModal2, setShowModal2] = useState(false);
     return (
-        <div className="bg-cover bg-center h-screen" style={{ backgroundImage: 'url("images/smart_traveller.png")', backgroundSize: 'cover', backgroundPosition: 'center center' }} >
-             <NavBar></NavBar>
+        <div className="bg-cover bg-center h-full" style={{ backgroundImage: 'url("../images/smart_traveller.png")', backgroundSize: 'cover', backgroundPosition: 'center center' }} >
+            <NavBar></NavBar>
             <div className="flex mt-4">
                 <div className="flex-1 bg-white w-96 mr-4">
                     <div className="flex flex-col p-2 mt-8 w-80 ml-4">
@@ -101,38 +104,43 @@ const Hotels: React.FC<FilterProps> = () => {
                             +New Hotel
                         </button>
                     </div>
-                    
+
                 </div>
                 <div className="flex-2">
                     <div className="bg-white p-4 w-full h-full">
-                    
+
                         <h2 className='text-black p-2'>Hotels and Villas</h2>
                         <div className='flex'>
-                            <div className="m-2"><Card></Card></div>
-                            <div className="m-2"><Card></Card></div>
-                            <div className="m-2"><Card></Card></div>
-                            <div className="m-2"><Card></Card></div>
+                            <div onClick={() => setShowModal2(true)} className="m-2"><Card></Card></div>
+                            <div onClick={() => setShowModal2(true)} className="m-2"><Card></Card></div>
+                            <div onClick={() => setShowModal2(true)} className="m-2"><Card></Card></div>
+                            <div onClick={() => setShowModal2(true)} className="m-2"><Card></Card></div>
                         </div>
                         <div className='flex'>
-                            <div className="m-2"><Card></Card></div>
-                            <div className="m-2"><Card></Card></div>
-                            <div className="m-2"><Card></Card></div>
-                            <div className="m-2"><Card></Card></div>
+                            <div onClick={() => setShowModal2(true)} className="m-2"><Card></Card></div>
+                            <div onClick={() => setShowModal2(true)} className="m-2"><Card></Card></div>
+                            <div onClick={() => setShowModal2(true)} className="m-2"><Card></Card></div>
+                            <div onClick={() => setShowModal2(true)} className="m-2"><Card></Card></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="modal-root" className="absolute top-12 left-96 w-9/12 h-full flex">
-                {showModal && <div  className="absolute top-12 left-80 w-5/6 h-full flex justify-center items-center">
+            <div id="modal-root">
+                {showModal && <div className="absolute top-28 left-96 w-9/12 h-full flex justify-center items-center">
                     <div className="w-5/6 flex justify-end " >
-                        
-                       <AddHotel onClose={() => setShowModal(false)}></AddHotel>
+
+                        <AddHotel onClose={() => setShowModal(false)}></AddHotel>
                     </div>
-                    
+
                 </div>}
             </div>
+            {showModal2 && <div className="absolute left-80 w-full h-full flex justify-center items-center">
+                <div className="w-full flex justify-end " >
+                    <HotelView onClose={() => setShowModal2(false)}></HotelView>
+                </div>
 
+            </div>}
         </div>
 
     )

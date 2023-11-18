@@ -1,15 +1,19 @@
 import React from 'react';
+import Image from 'next/image'
 import NavBar2 from "../nav2/nav-bar";
 
 
 export default function Email() {
     return (
-        <div className="bg-cover bg-center h-screen" style={{ backgroundImage: 'url("images/background.jpg")', backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+        <div className="bg-cover bg-center h-full" style={{ backgroundImage: 'url("../images/background.jpg")', backgroundSize: 'cover', backgroundPosition: 'center center' }}>
             <NavBar2></NavBar2>
-            <div className="w-48 ml-28 mt-12">
-          <img src="images/smart_traveller_logo.png" alt="" />
-          <div className="font-logo text-xl text-black font-medium">Visit Sri Lanka</div>
-        </div>
+            <div className="w-full flex justify-center items-center mt-12">
+                <div>
+                    <img className='w-48' src="../images/smart_traveller_logo.png" alt="" />
+                    <div className="font-logo text-xl text-black font-medium">Visit Sri Lanka</div>
+                </div>
+            </div>
+
             <div className="flex justify-center mt-6">
                 <div className="justify-center w-96 pr-8 pl-8 px-6 py-6 lg:px-8 bg-white rounded">
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">

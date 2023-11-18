@@ -9,9 +9,9 @@ import NavBar from '../nav/nav-bar';
 
 export default function Gallery() {
     return (
-        <div>
+        <div className="bg-cover bg-center h-full" style={{ backgroundImage: 'url("../images/smart_traveller.png")', backgroundSize: 'cover', backgroundPosition: 'center center' }}>
             <NavBar></NavBar>
-            <div className="bg-white">
+            <div className="mt-36 pb-36 ml-12">
                 <label className="text-blue-500 text-7xl ml-12 font-bold">ABOUT US</label>
                 <div>
                     <label className="text-gray-700 text-4xl ml-12 font-semibold mt-4"> Visit Sri Lanka </label>
