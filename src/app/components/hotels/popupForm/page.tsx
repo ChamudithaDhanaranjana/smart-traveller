@@ -2,17 +2,19 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import ReactDOM from "react-dom";
+import axios from "axios";
+import {number} from "prop-types";
 
 interface FormData {
-  hotelName: string;
-  hotelType: string;
-  hotelDescription: string;
-  price: string;
-  province: string;
-  district: string;
-  locationLink: string;
-  openDropdown: string;
-  closeDropdown: string;
+  name:string,
+  description:string,
+  type:string,
+  price_per_person:string,
+  open_time:string,
+  close_time:string,
+  province:string,
+  district:string,
+  location_link:string,
 }
 
 interface AddHotelProps {
@@ -21,26 +23,40 @@ interface AddHotelProps {
 
 const AddHotel: React.FC<AddHotelProps> = ({ onClose }) => {
   const [formData, setFormData] = useState<FormData>({
-    hotelName: '',
-    hotelType: '',
-    hotelDescription: '',
-    price: '',
-    province: '',
-    district: '',
-    locationLink: '',
-    openDropdown: '',
-    closeDropdown: '',
+    name:'',
+    description:'',
+      type:'',
+      price_per_person:'',
+      open_time:'',
+      close_time:'',
+      province:'',
+      district:'',
+      location_link:'',
   });
 
+  const addHotel = async () => {
+    axios.post(`http://localhost:8000/api/hotel`, formData)
+        .then((response) => {
+         window.alert("Hotel added successfully!")
+        })
+        .catch(error => {
+          console.log('error',error)
+          window.alert('Something went wrong!!')
+        })
+        .finally(() => {
+
+        });
+  }
+
   const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+      e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = () => {
+    addHotel();
     console.log('Form Data:', formData);
     onClose();
   };
@@ -82,9 +98,9 @@ const AddHotel: React.FC<AddHotelProps> = ({ onClose }) => {
                 </label>
                 <input
                   type="text"
-                  id="hotelName"
-                  name="hotelName"
-                  value={formData.hotelName}
+                  id="name"
+                  name="name"
+                  value={formData.name}
                   onChange={handleInputChange}
                   className="w-full py-2 px-3 rounded-full bg-gray-200 focus:outline-none focus:border-indigo-500"
                 />
@@ -93,24 +109,30 @@ const AddHotel: React.FC<AddHotelProps> = ({ onClose }) => {
                 <label htmlFor="hotelType" className="block text-gray-700 mb-2">
                   Hotel Type
                 </label>
-                <input
-                  type="text"
-                  id="hotelType"
-                  name="hotelType"
-                  value={formData.hotelType}
-                  onChange={handleInputChange}
-                  className="w-full py-2 px-3 rounded-full bg-gray-200 focus:outline-none focus:border-indigo-500"
-                />
+                <select
+                    id="type"
+                    name="type"
+                    value={formData.type}
+                    onChange={(e) => setFormData({...formData, type: e.target.value})}
+                    className="block appearance-none w-full bg-gray-200 border border-gray-300 text-gray-700 py-2 px-3 rounded-full leading-tight focus:outline-none focus:border-indigo-500"
+                >
+                  <option value="" disabled selected></option>
+                  <option value="Luxury Hotels">Luxury Hotels</option>
+                  <option value="Boutique Hotels">Boutique Hotels</option>
+                  <option value="Eco Hotels">Eco Hotels</option>
+                  <option value="Guesthouses">Guesthouses</option>
+                  <option value="Homestays">Homestays</option>
+                </select>
               </div>
               <div className="mb-4">
                 <label htmlFor="hotelDescription" className="block text-gray-700 mb-2">
                   Write your Description
                 </label>
                 <textarea
-                  id="hotelDescription"
-                  name="hotelDescription"
-                  value={formData.hotelDescription}
-                  onChange={handleInputChange}
+                  id="description"
+                  name="description"
+                  value={formData.description}
+                  onChange={(e) => setFormData({...formData, description: e.target.value})}
                   className="w-full py-2 px-3 rounded-md bg-gray-200 focus:outline-none focus:border-indigo-500"
                   placeholder="Type here |"
                 ></textarea>
@@ -122,10 +144,10 @@ const AddHotel: React.FC<AddHotelProps> = ({ onClose }) => {
                 <div className="relative w-full">
                   <input
                     type="text"
-                    id="price"
+                    id="price_per_person"
                     name="price"
-                    value={formData.price}
-                    onChange={handleInputChange}
+                    value={formData.price_per_person}
+                    onChange={(e) => setFormData({...formData, price_per_person: e.target.value})}
                     className="py-2 px-3 w-full rounded-full bg-gray-200 focus:outline-none focus:border-indigo-500"
                     placeholder=""
                   />
@@ -142,13 +164,19 @@ const AddHotel: React.FC<AddHotelProps> = ({ onClose }) => {
                       id="province"
                       name="province"
                       value={formData.province}
-                      onChange={handleInputChange}
+                      onChange={(e) => setFormData({...formData, province: e.target.value})}
                       className="block appearance-none w-full bg-gray-200 border border-gray-300 text-gray-700 py-2 px-3 rounded-full leading-tight focus:outline-none focus:border-indigo-500"
                     >
                       <option value="" disabled selected></option>
                       <option value="western">Western</option>
                       <option value="central">Central</option>
                       <option value="southern">Southern</option>
+                      <option value="northern">Northern</option>
+                      <option value="eastern">Eastern</option>
+                      <option value="north_western">North Western</option>
+                      <option value="north_central">North Central</option>
+                      <option value="uva">Uva</option>
+                      <option value="sabaragamuwa">Sabaragamuwa</option>
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-blue-500">
                       <svg
@@ -175,13 +203,35 @@ const AddHotel: React.FC<AddHotelProps> = ({ onClose }) => {
                       id="district"
                       name="district"
                       value={formData.district}
-                      onChange={handleInputChange}
+                      onChange={(e) => setFormData({...formData, district: e.target.value})}
                       className="block appearance-none w-full bg-gray-200 border border-gray-300 text-gray-700 py-2 px-3 rounded-full leading-tight focus:outline-none focus:border-indigo-500"
                     >
                       <option value="" disabled selected></option>
-                      <option value="ratnapura">Ratnapura</option>
+                      <option value="ampara">Ampara</option>
+                      <option value="anuradhapura">Anuradhapura</option>
+                      <option value="badulla">Badulla</option>
+                      <option value="batticaloa">Batticaloa</option>
                       <option value="colombo">Colombo</option>
+                      <option value="galle">Galle</option>
+                      <option value="gampaha">Gampaha</option>
+                      <option value="hambantota">Hambantota</option>
+                      <option value="jaffna">Jaffna</option>
+                      <option value="kalutara">Kalutara</option>
+                      <option value="kandy">Kandy</option>
                       <option value="kegalle">Kegalle</option>
+                      <option value="kilinochchi">Kilinochchi</option>
+                      <option value="kurunegala">Kurunegala</option>
+                      <option value="mannar">Mannar</option>
+                      <option value="matale">Matale</option>
+                      <option value="matara">Matara</option>
+                      <option value="monaragala">Monaragala</option>
+                      <option value="mullaitivu">Mullaitivu</option>
+                      <option value="nuwara_eliya">Nuwara Eliya</option>
+                      <option value="polonnaruwa">Polonnaruwa</option>
+                      <option value="puttalam">Puttalam</option>
+                      <option value="ratnapura">Ratnapura</option>
+                      <option value="trincomalee">Trincomalee</option>
+                      <option value="vavuniya">Vavuniya</option>
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-blue-500">
                       <svg
@@ -206,10 +256,10 @@ const AddHotel: React.FC<AddHotelProps> = ({ onClose }) => {
                 </label>
                 <input
                   type="text"
-                  id="locationLink"
-                  name="locationLink"
-                  value={formData.locationLink}
-                  onChange={handleInputChange}
+                  id="location_link"
+                  name="location_link"
+                  value={formData.location_link}
+                  onChange={(e) => setFormData({...formData, location_link: e.target.value})}
                   className="w-full py-2 px-3 rounded-full bg-gray-200 focus:outline-none focus:border-indigo-500"
                 />
               </div>
@@ -219,16 +269,19 @@ const AddHotel: React.FC<AddHotelProps> = ({ onClose }) => {
                   <label htmlFor="openDropdown" className="mr-12 text-gray-700 block">Open</label>
                   <div className="relative w-full">
                     <select
-                      id="openDropdown"
-                      name="openDropdown"
-                      value={formData.openDropdown}
-                      onChange={handleInputChange}
+                      id="open_time"
+                      name="open_time"
+                      value={formData.open_time}
+                      onChange={(e) => setFormData({...formData, open_time: e.target.value})}
                       className="block appearance-none w-full bg-gray-200 border border-gray-300 text-gray-700 py-2 px-3 rounded-full leading-tight focus:outline-none focus:border-indigo-500"
                     >
                       <option value="" disabled selected></option>
-                      <option value="option1">Option 1</option>
-                      <option value="option2">Option 2</option>
-                      <option value="option3">Option 3</option>
+                      <option value="05:00">05:00 a.m.</option>
+                      <option value="06:00">06:00 a.m.</option>
+                      <option value="07:00">07:00 a.m.</option>
+                      <option value="08:00">08:00 a.m.</option>
+                      <option value="09:00">09:00 a.m.</option>
+                      <option value="10:00">10:00 a.m.</option>
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-blue-500">
                       <svg
@@ -250,16 +303,17 @@ const AddHotel: React.FC<AddHotelProps> = ({ onClose }) => {
                   <label htmlFor="closeDropdown" className="text-gray-700 mr-4 block">Close</label>
                   <div className="relative w-full">
                     <select
-                      id="closeDropdown"
-                      name="closeDropdown"
-                      value={formData.closeDropdown}
-                      onChange={handleInputChange}
+                      id="close_time"
+                      name="close_time"
+                      value={formData.close_time}
+                      onChange={(e) => setFormData({...formData, close_time: e.target.value})}
                       className="block appearance-none w-full bg-gray-200 border border-gray-300 text-gray-700 py-2 rounded-full leading-tight focus:outline-none focus:border-indigo-500"
                     >
                       <option value="" disabled selected></option>
-                      <option value="optionA">Option A</option>
-                      <option value="optionB">Option B</option>
-                      <option value="optionC">Option C</option>
+                      <option value="20:00">08:00 p.m.</option>
+                      <option value="21:00">09:00 p.m.</option>
+                      <option value="22:00">10:00 p.m.</option>
+                      <option value="23:00">11:00 p.m.</option>
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-blue-500">
                       <svg
