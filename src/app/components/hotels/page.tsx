@@ -18,6 +18,7 @@ const Hotels: React.FC<FilterProps> = () => {
     const [showModal, setShowModal] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
     const [hotels, setHotels] = useState([]);
+    const [hotelId, setHotelId] = useState('');
 
     const fetchHotels = async () => {
         try {
@@ -132,7 +133,10 @@ const Hotels: React.FC<FilterProps> = () => {
                         <h2 className='text-black p-2'>Hotels and Villas</h2>
                         <div className="flex flex-wrap">
                             {hotels && hotels.map((hotel: any, index: number) => (
-                                <div key={hotel.id} className={`w-1/4 p-2 ${index % 4 === 0 ? 'clear-left' : ''}`}>
+                                <div key={hotel.id} className={`w-1/4 p-2 ${index % 4 === 0 ? 'clear-left' : ''}`} onClick={() => {
+                                    setShowModal2(true);
+                                    setHotelId(hotel.id);
+                                }}>
                                     <HotelCard hotel={hotel}></HotelCard>
                                 </div>
                             ))}
@@ -152,7 +156,7 @@ const Hotels: React.FC<FilterProps> = () => {
             </div>
             {showModal2 && <div className="absolute left-80 w-full h-full flex justify-center items-center">
                 <div className="w-full flex justify-end " >
-                    <HotelView onClose={() => setShowModal2(false)}></HotelView>
+                    <HotelView onClose={() => setShowModal2(false)} hotelId={hotelId}></HotelView>
                 </div>
 
             </div>}

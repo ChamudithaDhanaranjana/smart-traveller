@@ -1,10 +1,39 @@
+"use client";
 import ReactDOM from "react-dom";
+import axios from "axios";
+import {useEffect, useState} from "react";
 
 interface HotelViewProps {
     onClose: () => void;
+    hotelId:string;
 }
 
-const HotelView: React.FC<HotelViewProps> = ({ onClose }) => {
+interface Hotel {
+    name: string;
+    // Other properties...
+}
+
+const HotelView: React.FC<HotelViewProps> = ({ onClose,hotelId }) => {
+
+    const [hotel, setHotel] = useState<any>([])
+    const fetchHotel = async () => {
+        try {
+            const response = await axios(`http://localhost:8000/api/hotel/${hotelId}`);
+            if (!response) {
+                throw new Error('Network response was not ok');
+            } else {
+                console.log("hotel",response.data.data);
+                setHotel(response.data.data);
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    useEffect(() => {
+        fetchHotel();
+    }, []);
+
     const modalContent = (
         <div className="absolute top-28 left-96 w-9/12 h-full flex">
             <div className="bg-white p-4  w-full">
@@ -15,29 +44,24 @@ const HotelView: React.FC<HotelViewProps> = ({ onClose }) => {
                     </svg>
                 </button>
                 <div className="grid grid-cols-2 gap-4 justify-center items-center bg-white p-8">
-
-
                     <div className="col-span-1 ml-20">
-                        <h1 className="text-5xl font-bold text-black mb-4 max-w-lg mx-auto">Mounten tern villa</h1>
+                        <h1 className="text-5xl font-bold text-black mb-4 max-w-lg mx-auto">{hotel.name}</h1>
                         <img
                             src="https://tecdn.b-cdn.net/img/new/standard/city/041.webp"
                             className="h-auto max-w-l shadow-none transition-shadow duration-300 w-full mx-auto mb-4"
                             alt=""
                         />
-
-
-
                         <div className="flex justify-between items-center">
                             <div>
-                                <h2 className="text-2xl font-bold text-gray-800 mt-8">Mounten Turn Villa</h2>
-                                <p className="text-gray-600">Hotel ID : #2508122</p>
-                                <p className="text-gray-600">Hotel type : Villa</p>
-                                <p className="text-gray-600">Pilana, Galle</p>
+                                <h2 className="text-2xl font-bold text-gray-800 mt-8">{hotel.name}</h2>
+                                <p className="text-gray-600">Hotel ID : {hotel.id}</p>
+                                <p className="text-gray-600">Hotel type : {hotel.hotel_types ? hotel.hotel_types.name:''}</p>
+                                <p className="text-gray-600">{hotel.district ? hotel.district.name : ''}{hotel.district ? ',':''} {hotel.province ? hotel.province.name:''}</p>
                             </div>
                             <div>
                                 <p className="text-green-600 text-lg mt-24">
                                     <span className="text-xs text-black">starting from </span>
-                                    <span className="text-xl text-black font-bold">LKR 25,000</span>
+                                    <span className="text-xl text-black font-bold">{hotel.price_per_person?'LKR':''} {hotel.price_per_person}</span>
                                 </p>
                             </div>
                         </div>
@@ -48,22 +72,23 @@ const HotelView: React.FC<HotelViewProps> = ({ onClose }) => {
 
                     <div className="col-span-1 max-w-xl px-12">
 
-                        <p className="text-l mb-4 text-black">You're eligible for a Genius discount at Aparthotel Stare Miasto! To save at this property, all you have to do is sign in.</p>
-                        <p className="text-l mb-4 text-black">Aparthotel Stare Miasto is situated in the very centre of Kraków’s Old Town, just 120 metres from the Main Market Square. It features spacious modern apartments with free WiFi.</p>
-                        <p className="text-l mb-4 text-black">Located in a historic building, Aparthotel Stare Miasto features a unique interior design in the warm color of bricks with wooden elements.</p>
-                        <p className="text-l mb-4 text-black">All apartments at Aparthotel Stare Miasto are air-conditioned, fitted with an LCD TV and a fully-equipped kitchenette, including a refrigerator and an electric kettle. The 24-hour front desk offers ticket and tour services.</p>
+                        <p className="text-l mb-4 text-black">{hotel.description}</p>
+                        {/*<p className="text-l mb-4 text-black">Aparthotel Stare Miasto is situated in the very centre of Kraków’s Old Town, just 120 metres from the Main Market Square. It features spacious modern apartments with free WiFi.</p>*/}
+                        {/*<p className="text-l mb-4 text-black">Located in a historic building, Aparthotel Stare Miasto features a unique interior design in the warm color of bricks with wooden elements.</p>*/}
+                        {/*<p className="text-l mb-4 text-black">All apartments at Aparthotel Stare Miasto are air-conditioned, fitted with an LCD TV and a fully-equipped kitchenette, including a refrigerator and an electric kettle. The 24-hour front desk offers ticket and tour services.</p>*/}
 
                         <div className="flex justify-between items-center">
                             <button
                                 type="submit"
                                 className="flex justify-center rounded-l bg-blue-500 px-8 py-1 font-semibold leading-6 text-white text-m shadow-sm hover:bg-blue-400"
+                                onClick={() => window.open(`${hotel.location_links?hotel.location_links.name:''}`, '_blank')}
                             >
                                 View Location
                             </button>
 
                             <div className="ml-4 flex flex-col mr-20">
-                                <p className="text-l text-green-600 ">Open 6.00 a.m.</p>
-                                <p className="text-l text-green-600 my-0">Close 10.30 p.m.</p>
+                                <p className="text-l text-green-600 ">Open : {hotel.open_time ? hotel.open_time:''}</p>
+                                <p className="text-l text-green-600 my-0">Close :{hotel.close_time ? hotel.close_time:''}</p>
                             </div>
                         </div>
 

@@ -15,6 +15,7 @@ interface FormData {
   province:string,
   district:string,
   location_link:string,
+  img:string,
 }
 
 interface AddHotelProps {
@@ -32,7 +33,9 @@ const AddHotel: React.FC<AddHotelProps> = ({ onClose }) => {
       province:'',
       district:'',
       location_link:'',
+    img:'',
   });
+  const [imgSrc, setImgSrc] = useState<any>('');
 
   const addHotel = async () => {
     axios.post(`http://localhost:8000/api/hotel`, formData)
@@ -61,6 +64,22 @@ const AddHotel: React.FC<AddHotelProps> = ({ onClose }) => {
     onClose();
   };
 
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file: File | null = e.target.files && e.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImgSrc(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  useEffect(() => {
+    setFormData({...formData, img: imgSrc})
+  }, [imgSrc]);
+
   const modalContent = (
     <div className="absolute top-28 left-96 w-9/12 h-full flex justify-center items-center">
       <div className="w-full h-full">
@@ -78,8 +97,14 @@ const AddHotel: React.FC<AddHotelProps> = ({ onClose }) => {
                   <label className="relative cursor-pointer rounded-lg font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
                     <span className="block text-5xl mb-2 text-white">+</span>
                     <span className="text-white text-2xl">Upload images here</span>
-                    <input name="file-upload" type="file" className="sr-only" />
+                    <input name="file-upload" type="file" className="sr-only" onChange={handleImageChange}/>
                   </label>
+                  {imgSrc && (
+                      <div>
+                        <h2>Uploaded Image:</h2>
+                        <img src={imgSrc} alt="Uploaded" />
+                      </div>
+                  )}
                 </div>
               </div>
               <div className="w-full flex justify-center items-center">
