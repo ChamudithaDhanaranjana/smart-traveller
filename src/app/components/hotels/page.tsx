@@ -1,11 +1,12 @@
 "use client";
 import Image from 'next/image'
 import { BrowserRouter as Router } from 'react-router-dom';
-import Card from '../travelLocation/card/page';
 import NavBar from '../nav/nav-bar';
-import { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import AddHotel from './popupForm/page';
 import HotelView from './popupView/page';
+import axios from "axios";
+import HotelCard from "@/app/components/hotels/card/page";
 
 
 interface FilterProps {
@@ -16,6 +17,25 @@ interface FilterProps {
 const Hotels: React.FC<FilterProps> = () => {
     const [showModal, setShowModal] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
+    const [hotels, setHotels] = useState([]);
+
+    const fetchHotels = async () => {
+        try {
+            const response = await axios('http://localhost:8000/api/hotel');
+            if (!response) {
+                throw new Error('Network response was not ok');
+            } else {
+                console.log("hotels",response.data.data);
+                setHotels(response.data.data);
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    useEffect(() => {
+        fetchHotels();
+    }, []);
     return (
         <div className="bg-cover bg-center h-full" style={{ backgroundImage: 'url("../images/smart_traveller.png")', backgroundSize: 'cover', backgroundPosition: 'center center' }} >
             <NavBar></NavBar>
@@ -110,10 +130,10 @@ const Hotels: React.FC<FilterProps> = () => {
                     <div className="bg-white p-4 w-full h-full">
 
                         <h2 className='text-black p-2'>Hotels and Villas</h2>
-                        <div className='flex'>
-                            {[1, 2, 3, 4].map((index) => (
-                                <div key={index} onClick={() => setShowModal2(true)} className="m-2">
-                                    <Card></Card>
+                        <div className="flex flex-wrap">
+                            {hotels && hotels.map((hotel: any, index: number) => (
+                                <div key={hotel.id} className={`w-1/4 p-2 ${index % 4 === 0 ? 'clear-left' : ''}`}>
+                                    <HotelCard hotel={hotel}></HotelCard>
                                 </div>
                             ))}
                         </div>
