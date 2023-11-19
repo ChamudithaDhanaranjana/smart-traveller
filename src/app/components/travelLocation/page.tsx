@@ -107,16 +107,11 @@ const TravelLocations: React.FC<FilterProps> = () => {
                     <div className="bg-white p-4 w-full h-full">
                         <h2 className='text-black p-2'>Locations</h2>
                         <div className='flex'>
-                            <div onClick={() => setShowModal2(true)} className="m-2"><Card></Card></div>
-                            <div onClick={() => setShowModal2(true)} className="m-2"><Card></Card></div>
-                            <div onClick={() => setShowModal2(true)} className="m-2"><Card></Card></div>
-                            <div onClick={() => setShowModal2(true)} className="m-2"><Card></Card></div>
-                        </div>
-                        <div className='flex'>
-                            <div onClick={() => setShowModal2(true)} className="m-2"><Card></Card></div>
-                            <div onClick={() => setShowModal2(true)} className="m-2"><Card></Card></div>
-                            <div onClick={() => setShowModal2(true)} className="m-2"><Card></Card></div>
-                            <div onClick={() => setShowModal2(true)} className="m-2"><Card></Card></div>
+                            {[1, 2, 3, 4].map((index) => (
+                                <div key={index} onClick={() => setShowModal2(true)} className="m-2">
+                                    <Card></Card>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
