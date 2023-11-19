@@ -3,6 +3,10 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import ReactDOM from "react-dom";
 
+interface AddHotelProps {
+  onClose: () => void;
+}
+
 interface FormData {
   hotelName: string;
   hotelType: string;
@@ -13,10 +17,6 @@ interface FormData {
   locationLink: string;
   openDropdown: string;
   closeDropdown: string;
-}
-
-interface AddHotelProps {
-  onClose: () => void;
 }
 
 const AddHotel: React.FC<AddHotelProps> = ({ onClose }) => {
@@ -49,12 +49,10 @@ const AddHotel: React.FC<AddHotelProps> = ({ onClose }) => {
     <div className="absolute top-28 left-96 w-9/12 h-full flex justify-center items-center">
       <div className="w-full h-full">
         <form className="bg-white p-10 rounded-lg" onSubmit={handleSubmit}>
-          <a className='text-black flex justify-end items-end' href="#" onClick={onClose} >
+          <a className='text-black flex justify-end items-end' href="#" onClick={onClose}>
             x
           </a>
           <label className="block text-gray-700 font-bold mb-2 text-xl">+AddHotel</label>
-
-
           <div className="flex">
             <div className="flex-1 w-48 pr-12">
               <div className="mt-2 flex justify-center  px-auto py-48 bg-gray-200">
@@ -284,5 +282,5 @@ const AddHotel: React.FC<AddHotelProps> = ({ onClose }) => {
     </div>
   );
   return ReactDOM.createPortal(modalContent, document.getElementById('modal-root')!);
-};
+}
 export default AddHotel;

@@ -1,6 +1,7 @@
 "use client";
 import Image from 'next/image'
 import { BrowserRouter as Router } from 'react-router-dom';
+import React from 'react';
 import Card from '../travelLocation/card/page';
 import NavBar from '../nav/nav-bar';
 import { useState } from 'react';
@@ -122,7 +123,7 @@ const Hotels: React.FC<FilterProps> = () => {
             </div>
 
             <div id="modal-root">
-                {showModal && <div className="absolute top-28 left-96 w-9/12 h-full flex justify-center items-center">
+                {showModal && <div className="absolute left-80 w-5/6 h-full flex justify-center items-center">
                     <div className="w-5/6 flex justify-end " >
 
                         <AddHotel onClose={() => setShowModal(false)}></AddHotel>
