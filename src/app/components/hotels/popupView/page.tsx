@@ -47,9 +47,11 @@ const HotelView: React.FC<HotelViewProps> = ({ onClose,hotelId }) => {
                     <div className="col-span-1 ml-20">
                         <h1 className="text-5xl font-bold text-black mb-4 max-w-lg mx-auto">{hotel.name}</h1>
                         <img
-                            src="https://tecdn.b-cdn.net/img/new/standard/city/041.webp"
-                            className="h-auto max-w-l shadow-none transition-shadow duration-300 w-full mx-auto mb-4"
+                            src={hotel.img}
+                            className="h-96 max-w-a shadow-none transition-shadow duration-300 w-96 mx-auto mb-4"
                             alt=""
+                            width={100}
+                            height={100}
                         />
                         <div className="flex justify-between items-center">
                             <div>

@@ -6,6 +6,7 @@ interface Hotel {
     id: number;
     name: string;
     price_per_person:number;
+    img:string,
     hotel_types:{
         name:string;
     }
@@ -25,7 +26,7 @@ const HotelCard: NextPage<CardProps> = ({ hotel }) => {
     return (
         <div>
             <div className="block max-w-sm w-64 bg-white rounded-lg shadow hover:bg-gray-100">
-                <img src="https://source.unsplash.com/random/200x200?hotel />" alt="Mountain tun villa" className="w-full h-60 object-cover rounded-lg" />
+                <img src={hotel.img} alt="Mountain tun villa" className="w-min h-min object-cover rounded-lg" />
                 <div className="p-4">
                     <h6 className="mb-2 mt-4 text-lg text-black font-bold tracking-tigh">{hotel.name}</h6>
                     <p className="font-normal text-sm text-gray-400">Hotel ID: {hotel.id}</p>

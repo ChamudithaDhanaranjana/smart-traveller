@@ -15,7 +15,7 @@ interface FormData {
   province:string,
   district:string,
   location_link:string,
-  img:string,
+  img:any,
 }
 
 interface AddHotelProps {
@@ -26,19 +26,23 @@ const AddHotel: React.FC<AddHotelProps> = ({ onClose }) => {
   const [formData, setFormData] = useState<FormData>({
     name:'',
     description:'',
-      type:'',
-      price_per_person:'',
-      open_time:'',
-      close_time:'',
-      province:'',
-      district:'',
-      location_link:'',
-    img:'',
+    type:'',
+    price_per_person:'',
+    open_time:'',
+    close_time:'',
+    province:'',
+    district:'',
+    location_link:'',
+    img:null,
   });
   const [imgSrc, setImgSrc] = useState<any>('');
 
   const addHotel = async () => {
-    axios.post(`http://localhost:8000/api/hotel`, formData)
+    axios.post(`http://localhost:8000/api/hotel`, formData,{
+      headers:{
+        'Content-Type': 'multipart/form-data',
+      }
+    })
         .then((response) => {
          window.alert("Hotel added successfully!")
         })
@@ -65,12 +69,13 @@ const AddHotel: React.FC<AddHotelProps> = ({ onClose }) => {
   };
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file: File | null = e.target.files && e.target.files[0];
+    const file = e.target.files && e.target.files[0];
 
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImgSrc(reader.result);
+        setImgSrc(reader.result as string); // Assert result type as string
+        setFormData({ ...formData, img: file });
       };
       reader.readAsDataURL(file);
     }
