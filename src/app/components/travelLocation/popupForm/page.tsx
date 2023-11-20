@@ -2,35 +2,57 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import ReactDOM from "react-dom";
+import axios from "axios";
 
 interface AddLocationProps {
   onClose: () => void;
 }
 interface FormData {
-  travelLocationName: string;
-  travelLocationType: string;
-  locationDescription: string;
-  price: string;
-  province: string;
-  district: string;
-  locationLink: string;
-  openDropdown: string;
-  closeDropdown: string;
+  name:string,
+  description:string,
+  type:string,
+  ticket_price:string,
+  open_time:string,
+  close_time:string,
+  province:string,
+  district:string,
+  location_link:string,
+  img:any,
 }
 
 const AddLocation: React.FC<AddLocationProps> = ({ onClose }) => {
   const [formData, setFormData] = useState<FormData>({
-    travelLocationName: '',
-    travelLocationType: '',
-    locationDescription: '',
-    price: '',
-    province: '',
-    district: '',
-    locationLink: '',
-    openDropdown: '',
-    closeDropdown: '',
+    name:'',
+    description:'',
+    type:'',
+    ticket_price:'',
+    open_time:'',
+    close_time:'',
+    province:'',
+    district:'',
+    location_link:'',
+    img:null,
   });
 
+  const [imgSrc, setImgSrc] = useState<any>('');
+
+  const addTravelLocation = async () => {
+    axios.post(`http://localhost:8000/api/travel_location`, formData,{
+      headers:{
+        'Content-Type': 'multipart/form-data',
+      }
+    })
+        .then((response) => {
+          window.alert("Travel location added successfully!")
+        })
+        .catch(error => {
+          console.log('error',error)
+          window.alert('Something went wrong!!')
+        })
+        .finally(() => {
+
+        });
+  }
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
@@ -38,13 +60,28 @@ const AddLocation: React.FC<AddLocationProps> = ({ onClose }) => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = () => {
+    addTravelLocation();
     console.log('Form Data:', formData);
-    // Add your logic to submit the form or close the modal
-    // For now, just close the modal
     onClose();
   };
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImgSrc(reader.result as string); // Assert result type as string
+        setFormData({ ...formData, img: file });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  useEffect(() => {
+    setFormData({...formData, img: imgSrc})
+  }, [imgSrc]);
 
   const modalContent = (
     <div className="absolute top-28 left-96 w-9/12 h-full flex justify-center items-center">
@@ -61,8 +98,14 @@ const AddLocation: React.FC<AddLocationProps> = ({ onClose }) => {
                   <label className="relative cursor-pointer rounded-lg font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
                     <span className="block text-5xl mb-2 text-white">+</span>
                     <span className="text-white text-2xl">Upload images here</span>
-                    <input name="file-upload" type="file" className="sr-only" />
+                    <input name="file-upload" type="file" className="sr-only" onChange={handleImageChange}/>
                   </label>
+                  {imgSrc && (
+                      <div>
+                        <h2>Uploaded Image:</h2>
+                        <img src={imgSrc} alt="Uploaded" />
+                      </div>
+                  )}
                 </div>
               </div>
               <div className="w-full flex justify-center items-center">
@@ -83,8 +126,8 @@ const AddLocation: React.FC<AddLocationProps> = ({ onClose }) => {
                   type="text"
                   id="hotelName"
                   name="hotelName"
-                  value={formData.travelLocationName}
-                  onChange={handleInputChange}
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
                   className="w-full py-2 px-3 rounded-full bg-gray-200 focus:outline-none focus:border-indigo-500"
                 />
               </div>
@@ -92,14 +135,21 @@ const AddLocation: React.FC<AddLocationProps> = ({ onClose }) => {
                 <label htmlFor="hotelType" className="block text-gray-700 mb-2">
                   Travel Location Type
                 </label>
-                <input
-                  type="text"
-                  id="hotelType"
-                  name="hotelType"
-                  value={formData.travelLocationType}
-                  onChange={handleInputChange}
-                  className="w-full py-2 px-3 rounded-full bg-gray-200 focus:outline-none focus:border-indigo-500"
-                />
+                <select
+                    id="type"
+                    name="type"
+                    value={formData.type}
+                    onChange={(e) => setFormData({...formData, type: e.target.value})}
+                    className="block appearance-none w-full bg-gray-200 border border-gray-300 text-gray-700 py-2 px-3 rounded-full leading-tight focus:outline-none focus:border-indigo-500"
+                >
+                  <option value="" disabled selected></option>
+                  <option value="Cultural Heritage Sites">Cultural Heritage Sites</option>
+                  <option value="Historical Cities">Historical Cities</option>
+                  <option value="Wildlife">Wildlife</option>
+                  <option value="Beaches">Beaches</option>
+                  <option value="Hills">Hills</option>
+                  <option value="Waterfalls">Waterfalls</option>
+                </select>
               </div>
               <div className="mb-4">
                 <label htmlFor="hotelDescription" className="block text-gray-700 mb-2">
@@ -108,8 +158,8 @@ const AddLocation: React.FC<AddLocationProps> = ({ onClose }) => {
                 <textarea
                   id="hotelDescription"
                   name="hotelDescription"
-                  value={formData.locationDescription}
-                  onChange={handleInputChange}
+                  value={formData.description}
+                  onChange={(e) => setFormData({...formData, description: e.target.value})}
                   className="w-full py-2 px-3 rounded-md bg-gray-200 focus:outline-none focus:border-indigo-500"
                   placeholder="Type here |"
                 ></textarea>
@@ -123,8 +173,8 @@ const AddLocation: React.FC<AddLocationProps> = ({ onClose }) => {
                     type="text"
                     id="price"
                     name="price"
-                    value={formData.price}
-                    onChange={handleInputChange}
+                    value={formData.ticket_price}
+                    onChange={(e) => setFormData({...formData, ticket_price: e.target.value})}
                     className="py-2 px-3 w-full rounded-full bg-gray-200 focus:outline-none focus:border-indigo-500"
                     placeholder=""
                   />
@@ -141,13 +191,19 @@ const AddLocation: React.FC<AddLocationProps> = ({ onClose }) => {
                       id="province"
                       name="province"
                       value={formData.province}
-                      onChange={handleInputChange}
+                      onChange={(e) => setFormData({...formData, province: e.target.value})}
                       className="block appearance-none w-full bg-gray-200 border border-gray-300 text-gray-700 py-2 px-3 rounded-full leading-tight focus:outline-none focus:border-indigo-500"
                     >
                       <option value="" disabled selected></option>
                       <option value="western">Western</option>
                       <option value="central">Central</option>
                       <option value="southern">Southern</option>
+                      <option value="northern">Northern</option>
+                      <option value="eastern">Eastern</option>
+                      <option value="north_western">North Western</option>
+                      <option value="north_central">North Central</option>
+                      <option value="uva">Uva</option>
+                      <option value="sabaragamuwa">Sabaragamuwa</option>
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-blue-500">
                       <svg
@@ -173,7 +229,7 @@ const AddLocation: React.FC<AddLocationProps> = ({ onClose }) => {
                       id="district"
                       name="district"
                       value={formData.district}
-                      onChange={handleInputChange}
+                      onChange={(e) => setFormData({...formData, district: e.target.value})}
                       className="block appearance-none w-full bg-gray-200 border border-gray-300 text-gray-700 py-2 px-3 rounded-full leading-tight focus:outline-none focus:border-indigo-500"
                     >
                       <option value="" disabled selected></option>
@@ -205,8 +261,8 @@ const AddLocation: React.FC<AddLocationProps> = ({ onClose }) => {
                   type="text"
                   id="locationLink"
                   name="locationLink"
-                  value={formData.locationLink}
-                  onChange={handleInputChange}
+                  value={formData.location_link}
+                  onChange={(e) => setFormData({...formData, location_link: e.target.value})}
                   className="w-full py-2 px-3 rounded-full bg-gray-200 focus:outline-none focus:border-indigo-500"
                 />
               </div>
@@ -215,16 +271,19 @@ const AddLocation: React.FC<AddLocationProps> = ({ onClose }) => {
                   <label htmlFor="openDropdown" className="mr-12 text-gray-700 block">Open</label>
                   <div className="relative w-full">
                     <select
-                      id="openDropdown"
-                      name="openDropdown"
-                      value={formData.openDropdown}
-                      onChange={handleInputChange}
-                      className="block appearance-none w-full bg-gray-200 border border-gray-300 text-gray-700 py-2 px-3 rounded-full leading-tight focus:outline-none focus:border-indigo-500"
+                        id="open_time"
+                        name="open_time"
+                        value={formData.open_time}
+                        onChange={(e) => setFormData({...formData, open_time: e.target.value})}
+                        className="block appearance-none w-full bg-gray-200 border border-gray-300 text-gray-700 py-2 px-3 rounded-full leading-tight focus:outline-none focus:border-indigo-500"
                     >
                       <option value="" disabled selected></option>
-                      <option value="option1">Option 1</option>
-                      <option value="option2">Option 2</option>
-                      <option value="option3">Option 3</option>
+                      <option value="05:00">05:00 a.m.</option>
+                      <option value="06:00">06:00 a.m.</option>
+                      <option value="07:00">07:00 a.m.</option>
+                      <option value="08:00">08:00 a.m.</option>
+                      <option value="09:00">09:00 a.m.</option>
+                      <option value="10:00">10:00 a.m.</option>
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-blue-500">
                       <svg
@@ -245,16 +304,17 @@ const AddLocation: React.FC<AddLocationProps> = ({ onClose }) => {
                   <label htmlFor="closeDropdown" className="text-gray-700 mr-4 block">Close</label>
                   <div className="relative w-full">
                     <select
-                      id="closeDropdown"
-                      name="closeDropdown"
-                      value={formData.closeDropdown}
-                      onChange={handleInputChange}
-                      className="block appearance-none w-full bg-gray-200 border border-gray-300 text-gray-700 py-2 rounded-full leading-tight focus:outline-none focus:border-indigo-500"
+                        id="close_time"
+                        name="close_time"
+                        value={formData.close_time}
+                        onChange={(e) => setFormData({...formData, close_time: e.target.value})}
+                        className="block appearance-none w-full bg-gray-200 border border-gray-300 text-gray-700 py-2 rounded-full leading-tight focus:outline-none focus:border-indigo-500"
                     >
                       <option value="" disabled selected></option>
-                      <option value="optionA">Option A</option>
-                      <option value="optionB">Option B</option>
-                      <option value="optionC">Option C</option>
+                      <option value="20:00">08:00 p.m.</option>
+                      <option value="21:00">09:00 p.m.</option>
+                      <option value="22:00">10:00 p.m.</option>
+                      <option value="23:00">11:00 p.m.</option>
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-blue-500">
                       <svg

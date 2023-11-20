@@ -16,7 +16,6 @@ interface Hotel {
     province:{
         name:string
     }
-    // Define other properties of the 'hotel' object here
 }
 
 interface CardProps {

@@ -1,7 +1,21 @@
 "use client";
 import NavBar from "../nav/nav-bar"
+import {useEffect, useState} from "react";
+import { useRouter } from 'next/navigation';
+import Email  from '../signin/page'
+
 
 export default function Review() {
+
+    useEffect(() => {
+
+    }, []);
+
+    const router = useRouter();
+
+    const handleNavigation = () => {
+    };
+
     return (
         <div className="bg-cover bg-center h-full" style={{ backgroundImage: 'url("../images/smart_traveller.png")', backgroundSize: 'cover', backgroundPosition: 'center center' }} >
             <NavBar></NavBar>
@@ -129,7 +143,6 @@ export default function Review() {
                                         <textarea className="w-full h-64 border border-gray-300 rounded focus:outline-none resize-none" placeholder="Type here"></textarea>
                                     </div>
                                     <div className="">
-
                                         <div className='w-full px-4'>
                                             <span className="ml-2">Give Your Rate</span>
                                             <div className='mb-2'>
@@ -150,14 +163,20 @@ export default function Review() {
                                                         <path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6z" />
                                                     </svg>
                                                 </div>
-
                                             </div>
-
                                         </div>
-
                                     </div>
                                     <div className="mt-10 flex justify-end">
-                                        <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Send</button>
+                                        <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                                                onClick={()=>{
+                                                    if(!Email){
+                                                    }
+                                                    else {
+                                                        console.log('user:',Email);
+                                                        // router.push('/components/signin')
+                                                    }
+                                                }}
+                                        >Send</button>
                                     </div>
                                 </div>
                             </div>

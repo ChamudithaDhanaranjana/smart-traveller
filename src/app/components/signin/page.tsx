@@ -1,9 +1,35 @@
-import React from 'react';
+"use client"
+
+import React, {useState} from 'react';
 import Image from 'next/image'
 import NavBar2 from "../nav2/nav-bar";
-
+import axios, { AxiosResponse } from "axios";
+import {useRouter} from "next/navigation";
 
 export default function Email() {
+
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    });
+    const [isUser, setIsUser] = useState(false)
+    const router = useRouter();
+
+
+    const handleLogin = async () => {
+        axios.post(`http://localhost:8000/api/consumer/login`, formData)
+            .then((response) => {
+                router.push('/components/reviews');
+            })
+            .catch((error: any) => {
+                console.log('error',error)
+                window.alert('Wrong email or password!!')
+            })
+            .finally(() => {
+
+            });
+    }
+
     return (
         <div className="bg-cover bg-center h-full" style={{ backgroundImage: 'url("../images/background.jpg")', backgroundSize: 'cover', backgroundPosition: 'center center' }}>
             <NavBar2></NavBar2>
@@ -33,6 +59,8 @@ export default function Email() {
                                         id="email"
                                         name="email"
                                         type="email"
+                                        value={formData.email}
+                                        onChange={(e) => setFormData({...formData, email: e.target.value})}
                                         placeholder="smarttraveller@gmail.com"
                                         required
                                         className="block w-full rounded-xl border-2 border-gray-300 py-2 px-3 text-gray-900 shadow-sm placeholder:text-gray-600 focus:ring-2 focus:ring-inset focus:ring-blue-500 focus:border-blue-500 hover:border-blue-500 sm:text-sm sm:leading-6"
@@ -51,6 +79,8 @@ export default function Email() {
                                         id="password"
                                         name="password"
                                         type="password"
+                                        value={formData.password}
+                                        onChange={(e) => setFormData({...formData, password: e.target.value})}
                                         placeholder="........."
                                         required
                                         className="block w-full rounded-xl border-2 border-gray-300 py-3 px-2 text-gray-900 shadow-sm placeholder:text-gray-600 focus:ring-2 focus:ring-inset focus:ring-blue-500 focus:border-blue-500 hover:border-blue-500 sm:text-sm sm:leading-6"
@@ -62,6 +92,9 @@ export default function Email() {
                                 <button
                                     type="submit"
                                     className="flex w-full justify-center rounded-2xl bg-blue-500 px-2 py-3 font-semibold leading-6 text-white text-xl shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500"
+                                    onClick={()=>{
+                                        handleLogin()
+                                    }}
                                 >
                                     Sign in
                                 </button>
@@ -82,7 +115,6 @@ export default function Email() {
                     </div>
                 </div>
             </div>
-
         </div>
 
 

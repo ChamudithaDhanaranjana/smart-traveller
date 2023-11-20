@@ -1,11 +1,14 @@
 "use client";
 import Image from 'next/image'
-import React from 'react';
+import React, {useEffect} from 'react';
 import Card from './card/page';
 import { useState } from 'react';
 import AddLocation from './popupForm/page';
 import NavBar from '../nav/nav-bar';
 import LocationView from './popupView/page';
+import LocationCard from "./card/page";
+import HotelCard from "@/app/components/hotels/card/page";
+import axios from "axios";
 
 interface FilterProps {
     // Add any additional props if needed
@@ -15,6 +18,27 @@ interface FilterProps {
 const TravelLocations: React.FC<FilterProps> = () => {
     const [showModal, setShowModal] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
+    const [locations, setLocations] = useState([]);
+    const [locationId, setLocationId] = useState('');
+
+    const fetchLocations = async () => {
+        try {
+            const response = await axios('http://localhost:8000/api/travel_location');
+            if (!response) {
+                throw new Error('Network response was not ok');
+            } else {
+                console.log("locations",response.data.data);
+                setLocations(response.data.data);
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    useEffect(() => {
+        fetchLocations();
+    }, []);
+
     return (
         <div className="bg-cover bg-center h-full" style={{ backgroundImage: 'url("../images/smart_traveller.png")', backgroundSize: 'cover', backgroundPosition: 'center center' }} >
             <NavBar></NavBar>
@@ -106,10 +130,13 @@ const TravelLocations: React.FC<FilterProps> = () => {
                 <div className="flex-2">
                     <div className="bg-white p-4 w-full h-full">
                         <h2 className='text-black p-2'>Locations</h2>
-                        <div className='flex'>
-                            {[1, 2, 3, 4].map((index) => (
-                                <div key={index} onClick={() => setShowModal2(true)} className="m-2">
-                                    <Card></Card>
+                        <div className="flex flex-wrap">
+                            {locations && locations.map((location: any, index: number) => (
+                                <div key={location.id} className={`w-1/4 p-2 ${index % 4 === 0 ? 'clear-left' : ''}`} onClick={() => {
+                                    setShowModal2(true);
+                                    setLocationId(location.id);
+                                }}>
+                                    <LocationCard location={location}></LocationCard>
                                 </div>
                             ))}
                         </div>
@@ -127,7 +154,7 @@ const TravelLocations: React.FC<FilterProps> = () => {
             </div>
             {showModal2 && <div className="absolute left-80 w-full h-full flex justify-center items-center">
                 <div className="w-full flex justify-end " >
-                    <LocationView onClose={() => setShowModal2(false)}></LocationView>
+                    <LocationView onClose={() => setShowModal2(false)} travelLocationId={locationId}></LocationView>
                 </div>
 
             </div>}
