@@ -17,7 +17,7 @@ const NavBar2: React.FC = () => {
         </div>
         <div className="flex">
           <div className="text-white text-lg mt-2 mr-4">LKR</div>
-          <a href="/components/signin">
+          <a href="/components/registration">
             <button className="flex bg-customBlue2 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded-full">
               <svg fill="white" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 45.532 45.532">
                 <path d="M22.766,0.001C10.194,0.001,0,10.193,0,22.766s10.193,22.765,22.766,22.765
@@ -27,7 +27,7 @@ const NavBar2: React.FC = () => {
       c-0.714-0.609-1.126-1.502-1.126-2.439c0-4.217,3.413-7.592,7.631-7.592h8.762c4.219,0,7.619,3.375,7.619,7.592
       c0,0.938-0.41,1.829-1.125,2.438C30.712,38.068,26.911,39.579,22.761,39.579z"/>
               </svg>
-              <span className="ml-2 pr-2">Sign In</span>
+              <span className="ml-2 pr-2">Sign Up</span>
             </button>
           </a>
 
