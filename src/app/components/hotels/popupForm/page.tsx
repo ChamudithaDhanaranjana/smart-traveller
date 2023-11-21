@@ -36,7 +36,7 @@ const AddHotel: React.FC<AddHotelProps> = ({ onClose }) => {
     img:null,
   });
   const [imgSrc, setImgSrc] = useState<any>('');
-
+  const [disable, setDisable] = useState(true);
   const addHotel = async () => {
     axios.post(`http://localhost:8000/api/hotel`, formData,{
       headers:{
@@ -77,6 +77,7 @@ const AddHotel: React.FC<AddHotelProps> = ({ onClose }) => {
       reader.onloadend = () => {
         setImgSrc(reader.result as string); // Assert result type as string
         setFormData({ ...formData, img: file });
+        setDisable(false);
       };
       reader.readAsDataURL(file);
     }
@@ -100,15 +101,17 @@ const AddHotel: React.FC<AddHotelProps> = ({ onClose }) => {
             <div className="flex-1 w-48 pr-12">
               <div className="mt-2 flex justify-center  px-auto py-48 bg-gray-200">
                 <div className="text-center">
-                  <label className="relative cursor-pointer rounded-lg font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
+                  {disable && (
+                      <label className="relative cursor-pointer rounded-lg font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
                     <span className="block text-5xl mb-2 text-white">+</span>
                     <span className="text-white text-2xl">Upload images here</span>
                     <input name="file-upload" type="file" className="sr-only" onChange={handleImageChange}/>
                   </label>
+                  )}
                   {imgSrc && (
                       <div>
                         <h2>Uploaded Image:</h2>
-                        <img src={imgSrc} alt="Uploaded" />
+                        <img src={imgSrc} alt="Uploaded" height={100} width={100}/>
                       </div>
                   )}
                 </div>

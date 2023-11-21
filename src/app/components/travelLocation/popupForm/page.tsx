@@ -104,7 +104,7 @@ const AddLocation: React.FC<AddLocationProps> = ({ onClose }) => {
                   {imgSrc && (
                       <div>
                         <h2>Uploaded Image:</h2>
-                        <img src={imgSrc} alt="Uploaded" />
+                        <img src={imgSrc} alt="Uploaded" height={100} width={100}/>
                       </div>
                   )}
                 </div>
