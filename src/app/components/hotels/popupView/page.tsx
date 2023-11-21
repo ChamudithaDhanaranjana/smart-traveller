@@ -18,7 +18,7 @@ const HotelView: React.FC<HotelViewProps> = ({ onClose,hotelId }) => {
     const [hotel, setHotel] = useState<any>([])
     const fetchHotel = async () => {
         try {
-            const response = await axios(`http://localhost:8000/api/hotel/${hotelId}`);
+            const response = await axios.get(`http://localhost:8000/api/hotel/${hotelId}`);
             if (!response) {
                 throw new Error('Network response was not ok');
             } else {

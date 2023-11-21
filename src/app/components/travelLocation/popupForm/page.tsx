@@ -44,6 +44,7 @@ const AddLocation: React.FC<AddLocationProps> = ({ onClose }) => {
     })
         .then((response) => {
           window.alert("Travel location added successfully!")
+          window.location.reload();
         })
         .catch(error => {
           console.log('error',error)

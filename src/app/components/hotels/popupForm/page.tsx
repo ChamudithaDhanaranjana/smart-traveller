@@ -45,6 +45,7 @@ const AddHotel: React.FC<AddHotelProps> = ({ onClose }) => {
     })
         .then((response) => {
          window.alert("Hotel added successfully!")
+          window.location.reload();
         })
         .catch(error => {
           console.log('error',error)

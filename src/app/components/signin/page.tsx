@@ -92,9 +92,7 @@ export default function Email() {
                                 <button
                                     type="submit"
                                     className="flex w-full justify-center rounded-2xl bg-blue-500 px-2 py-3 font-semibold leading-6 text-white text-xl shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500"
-                                    onClick={()=>{
-                                        handleLogin()
-                                    }}
+                                    onClick={handleLogin}
                                 >
                                     Sign in
                                 </button>
